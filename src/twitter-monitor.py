@@ -1,8 +1,6 @@
 import twitter
-import pprint
 from pymongo import MongoClient
 from textblob import TextBlob
-from textblob import WordList
 import configparser
 
 config = configparser.ConfigParser()
@@ -15,23 +13,26 @@ api = twitter.Api(consumer_key=config['global']['consumer_key'],
 
 client = MongoClient()
 tweets_coll = client.tweetsdb.tweets
+author_coll = client.tweetsdb.authors
 
-def downloadTweets():
+def downloadTweets(statuses):
     for x in statuses:
-        print("retrieving last 20 tweets")
         jsontweet = x.AsDict()
         id = jsontweet["id"]
         jsontweet['_id'] = jsontweet["id"]
         tweets_coll.update_one({'id':id}, {'$set' : jsontweet}, upsert=True)
 
+def getAuthors():
+    return(list(author_coll.find({}, {"username": 1, "_id": 0})))
 
-statuses = api.GetUserTimeline(screen_name="realDonaldTrump")
-downloadTweets()
+authors = getAuthors()
+for author in authors:
+    author = author["username"]
+    tweets = api.GetUserTimeline(screen_name=author)
+    downloadTweets(tweets)
 
-
+# Analyzing Tweets
 processed_tweets_coll = client.tweetsdb.processed_tweets
-
-
 
 def analyzeTweet(tweetId):
     tweet = tweets_coll.find_one({"_id":tweetId})
