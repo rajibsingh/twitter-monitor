@@ -42,7 +42,8 @@ def analyzeTweet(tweetId):
     blob = TextBlob(tweet["text"])
     tweetAnalysis["tags"] = blob.tags
     tweetAnalysis["noun_phrases"] = blob.noun_phrases
-    tweetAnalysis["sentiment"] = blob.sentiment
+    tweetAnalysis["sentiment.polarity"] = blob.sentiment[0]
+    tweetAnalysis["sentiment.subjectivity"] = blob.sentiment[1]
     processed_tweets_coll.update_one({"_id":tweet["id"]}, {'$set' : tweetAnalysis}, upsert=True)
 
 def processTweets():
