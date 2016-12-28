@@ -2,6 +2,8 @@ import twitter
 from pymongo import MongoClient
 from textblob import TextBlob
 import configparser
+from textstat.textstat import textstat
+import json
 
 config = configparser.ConfigParser()
 config.read("config.ini")
@@ -44,6 +46,10 @@ def analyzeTweet(tweetId):
     tweetAnalysis["noun_phrases"] = blob.noun_phrases
     tweetAnalysis["sentiment.polarity"] = blob.sentiment[0]
     tweetAnalysis["sentiment.subjectivity"] = blob.sentiment[1]
+    tweetAnalysis["flesch_kincaid"] = textstat.flesch_kincaid_grade(tweet["text"])
+    tweetAnalysis["average_sentence_length"] = textstat.avg_sentence_length(tweet["text"])
+    tweetAnalysis["average_syllables_per_word"] = textstat.avg_syllables_per_word(tweet["text"])
+    print("\ttweetAnalyis: " + json.dumps(tweetAnalysis))
     processed_tweets_coll.update_one({"_id":tweet["id"]}, {'$set' : tweetAnalysis}, upsert=True)
 
 def processTweets():
