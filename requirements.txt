@@ -1,8 +1,16 @@
+certifi==2018.1.18
+chardet==3.0.4
+future==0.16.0
+idna==2.6
 nltk==3.2.5
+oauthlib==2.0.6
 pymongo==3.6.1
 Pyphen==0.9.4
+python-twitter==3.4.1
 repoze.lru==0.7
+requests==2.18.4
+requests-oauthlib==0.8.0
 six==1.11.0
 textblob==0.15.1
 textstat==0.4.1
-twitter==1.18.0
+urllib3==1.22
