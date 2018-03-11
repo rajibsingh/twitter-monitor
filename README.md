@@ -4,6 +4,8 @@
 
 a simple system to gather and run text analysis from various sources. 
 
+## Infrasctructure
+* https://flask-pymongo.readthedocs.io/en/latest/ flask-pymongo
 ## Setup
 
 1. Run /data/initial_setup.js
