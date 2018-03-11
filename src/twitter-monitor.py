@@ -4,9 +4,11 @@ from textblob import TextBlob
 import configparser
 from textstat.textstat import textstat
 import json
+import os
 
 config = configparser.ConfigParser()
-config.read("config.ini")
+print("current directory {0}".format(os.getcwd()))
+config.read("../config.ini")
 
 api = twitter.Api(consumer_key=config['global']['consumer_key'],
                       consumer_secret=config['global']['consumer_secret'],
@@ -14,8 +16,8 @@ api = twitter.Api(consumer_key=config['global']['consumer_key'],
                       access_token_secret=config['global']['access_token_secret'])
 
 client = MongoClient()
-tweets_coll = client.tweetsdb.tweets
-author_coll = client.tweetsdb.authors
+tweets_coll = client.contentdb.tweet
+author_coll = client.contentdb.author
 
 def downloadTweets(statuses):
     for x in statuses:
@@ -34,7 +36,7 @@ for author in authors:
     downloadTweets(tweets)
 
 # Analyzing Tweets
-processed_tweets_coll = client.tweetsdb.processed_tweets
+processed_tweets_coll = client.contentdb.processed_tweets
 
 def analyzeTweet(tweetId):
     tweet = tweets_coll.find_one({"_id":tweetId})
