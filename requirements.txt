@@ -2,7 +2,7 @@ certifi==2018.1.18
 chardet==3.0.4
 future==0.16.0
 idna==2.6
-nltk==3.2.5
+nltk==3.4.5
 oauthlib==2.0.6
 pymongo==3.6.1
 Pyphen==0.9.4
